@@ -40,41 +40,59 @@ I turn concepts into cinematic content, digital campaigns and responsive website
 
 ## Screenshots
 
-> Screenshots were captured from the final fixed local build (desktop, 1440 px). Direct hosted links are added below as soon as the Postimages upload is complete — the screenshot files ready for that upload are: `hero.png`, `selected-work.png`, `process.png`, `about.png`, `skills.png`, `recognition.png`, `roles.png`, `journey.png`, `contact.png`.
+> Screenshots captured from the final fixed local build (desktop, 1440 px), hosted on Postimages (no expiration).
 
 ### Hero
+
+![hero — PORTFOLIO](https://i.postimg.cc/bwYhT4WY/hero.png)
 
 *Screenshot: hero — PORTFOLIO lettering behind the portrait, intro and stats.*
 
 ### Selected Work
 
+![selected-work —](https://i.postimg.cc/BvXGWHJk/selected-work.png)
+
 *Screenshot: selected-work — the first three real-picture cards, filters and search.*
 
 ### Process
+
+![process —](https://i.postimg.cc/bJncrPD6/process.png)
 
 *Screenshot: process — From Idea to Final Frame.*
 
 ### About
 
+![about —](https://i.postimg.cc/kMxPdnPH/about.png)
+
 *Screenshot: about — education, languages, services and the manifesto panel.*
 
 ### Skills
+
+![skills —](https://i.postimg.cc/dLqg2hT3/skills.png)
 
 *Screenshot: skills — full-width skills banner strips, two per row on desktop.*
 
 ### Recognition — Certificates
 
+![recognition —](https://i.postimg.cc/BX9wV2p5/recognition.png)
+
 *Screenshot: recognition — the overlapping Google / IBM / Adobe certificate stack.*
 
 ### Roles
+
+![roles —](https://i.postimg.cc/MT5P8n4P/roles.png)
 
 *Screenshot: roles — the 7-picture roles strip.*
 
 ### Journey
 
+![journey —](https://i.postimg.cc/5HmS2kJ7/journey.png)
+
 *Screenshot: journey — experiences and milestones.*
 
 ### Contact
+
+![contact —](https://i.postimg.cc/t4Jc7b89/contact.png)
 
 *Screenshot: contact — links, brief form and studio showcase card.*
 
