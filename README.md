@@ -68,25 +68,25 @@ I turn concepts into cinematic content, digital campaigns and responsive website
 
 ### Skills
 
-![skills —](https://i.postimg.cc/dLqg2hT3/skills.png)
+![skills —](https://i.postimg.cc/02ngbcj1/skills.png)
 
 *Screenshot: skills — full-width skills banner strips, two per row on desktop.*
 
 ### Recognition — Certificates
 
-![recognition —](https://i.postimg.cc/BX9wV2p5/recognition.png)
+![recognition —](https://i.postimg.cc/k5VLYCcJ/recognition.png)
 
 *Screenshot: recognition — the overlapping Google / IBM / Adobe certificate stack.*
 
 ### Roles
 
-![roles —](https://i.postimg.cc/MT5P8n4P/roles.png)
+![roles —](https://i.postimg.cc/fLmpZv1N/roles.png)
 
 *Screenshot: roles — the 7-picture roles strip.*
 
 ### Journey
 
-![journey —](https://i.postimg.cc/5HmS2kJ7/journey.png)
+![journey —](https://i.postimg.cc/gcyQTNv6/journey.png)
 
 *Screenshot: journey — experiences and milestones.*
 
