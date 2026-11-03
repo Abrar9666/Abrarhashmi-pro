@@ -40,59 +40,59 @@ I turn concepts into cinematic content, digital campaigns and responsive website
 
 ## Screenshots
 
-> Screenshots captured from the final fixed local build (desktop, 1440 px), hosted on Postimages (no expiration).
+> Screenshots captured from the final fixed local build (desktop, 1440 px), hosted on Postimages (no expiration, compressed JPEG for reliable loading).
 
 ### Hero
 
-![hero — PORTFOLIO](https://i.postimg.cc/bwYhT4WY/hero.png)
+![hero — PORTFOLIO](https://i.postimg.cc/BZxbw9YX/hero.jpg)
 
 *Screenshot: hero — PORTFOLIO lettering behind the portrait, intro and stats.*
 
 ### Selected Work
 
-![selected-work —](https://i.postimg.cc/BvXGWHJk/selected-work.png)
+![selected-work —](https://i.postimg.cc/15Bts01L/selected-work.jpg)
 
 *Screenshot: selected-work — the first three real-picture cards, filters and search.*
 
 ### Process
 
-![process —](https://i.postimg.cc/bJncrPD6/process.png)
+![process —](https://i.postimg.cc/y8NNdJVm/process.jpg)
 
 *Screenshot: process — From Idea to Final Frame.*
 
 ### About
 
-![about —](https://i.postimg.cc/kMxPdnPH/about.png)
+![about —](https://i.postimg.cc/CKBLGWnY/about.jpg)
 
 *Screenshot: about — education, languages, services and the manifesto panel.*
 
 ### Skills
 
-![skills —](https://i.postimg.cc/02ngbcj1/skills.png)
+![skills —](https://i.postimg.cc/CK3MmmbJ/skills.jpg)
 
 *Screenshot: skills — full-width skills banner strips, two per row on desktop.*
 
 ### Recognition — Certificates
 
-![recognition —](https://i.postimg.cc/k5VLYCcJ/recognition.png)
+![recognition —](https://i.postimg.cc/ZnZbhn7v/recognition.jpg)
 
 *Screenshot: recognition — the overlapping Google / IBM / Adobe certificate stack.*
 
 ### Roles
 
-![roles —](https://i.postimg.cc/fLmpZv1N/roles.png)
+![roles —](https://i.postimg.cc/44b4Qvyz/roles.jpg)
 
 *Screenshot: roles — the 7-picture roles strip.*
 
 ### Journey
 
-![journey —](https://i.postimg.cc/gcyQTNv6/journey.png)
+![journey —](https://i.postimg.cc/PrStBtmD/journey.jpg)
 
 *Screenshot: journey — experiences and milestones.*
 
 ### Contact
 
-![contact —](https://i.postimg.cc/t4Jc7b89/contact.png)
+![contact —](https://i.postimg.cc/y8578vQp/contact.jpg)
 
 *Screenshot: contact — links, brief form and studio showcase card.*
 
