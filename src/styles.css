@@ -240,7 +240,7 @@ body.swarm-wireframe .hero-word,body.swarm-wireframe .hero-portrait{box-shadow:i
 .swarm-bar{position:fixed;right:14px;bottom:14px;left:auto;transform:none;z-index:300;display:flex;gap:10px;align-items:center;background:#141010;border:2px solid var(--red);padding:7px 12px;font-size:11px;font-weight:700;box-shadow:0 8px 24px #000a;width:max-content;max-width:min(640px,calc(100vw - 28px));flex-wrap:nowrap;justify-content:flex-end}
 .swarm-bar .status{color:#ffb3ba;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .swarm-bar button{flex-shrink:0}
-.swarm-cursor{position:fixed;z-index:310;pointer-events:none;transition:left .28s cubic-bezier(.22,1,.36,1),top .28s cubic-bezier(.22,1,.36,1),opacity .2s ease}
+.swarm-cursor{position:fixed;z-index:310;pointer-events:none;transition:left .28s cubic-bezier(.22,1,.36,1),top .28s cubic-bezier(.22,1,.36,1),opacity .2s ease;filter:drop-shadow(0 3px 8px rgba(0,0,0,.9))}
 .swarm-snap{outline:2px dashed var(--red)!important;outline-offset:3px}
 .swarm-typing{background:rgba(227,43,60,.09)}
 .swarm-typing::after{content:'▍';color:var(--red);font-size:1.2em;font-weight:800;text-shadow:0 0 8px rgba(227,43,60,.9);animation:swarmBlink .5s steps(1) infinite}

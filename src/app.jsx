@@ -275,53 +275,52 @@ function Dialog({ project, onClose }) {
     </motion.div>
   </motion.div>;
 }
-/* Swarm preview v10 — PARALLEL MULTI-AGENT, WITHIN A SECTION TOGETHER
-   (user corrections, 2026-11-06 — supersedes v8 sequential and v9):
-   The user clarified: ALL agents work TOGETHER at once, like at the
-   start — every agent doing its own work, multiple agents doing
-   multiple jobs, all together. NOT sequence-wise, NOT one at a time.
-   Example: in the hero the PORTFOLIO word stretches, then right, then
-   the picture goes in — the rest of the steps in the same flow, all
-   together. All agents do their own work WITHIN one section, together.
-   1. PARALLEL LANES, PER SECTION: 12 independent lanes, 18 plain unnamed
-      cursors, ALL working at the same time within the current section
-      — one types, one drags a frame, one places a picture, one builds
-      a card, etc. Sections are still built in order (hero -> work ->
-      process -> ...), but WITHIN each section everything happens in
-      parallel, fast. The viewer sees a busy team building together.
-   2. CAMERA FOLLOWS THE SECTION: the viewport stays on the section
-      the team is building together, scrolling with the team as they
-      move down section by section — never stuck while work happens
-      off-screen.
-   3. EFFECTS ONLY, INTENSITY UP (no decoration): dramatic drag-and-
-      drop (grab, lift, carry, drop with visible travel), visible
-      typing (word-by-word, bold blinking caret), visual build (frame
-      draws in, image grayscale->colour, snap pop on landing). NO
-      trails, bursts, sparkles, stars, glow, halos, rings, shimmer.
-   4. FROM SCRATCH: blank black start, phases in order, fast like the
-      reference video (60.72s, ~60-75s total). No dwell, continuous,
-      Skip throughout. No external script. */
-// v10: plain unnamed cursors — colours only, NO names anywhere (the
-// reference video has plain small cursors, nothing written above them).
-// v11 cursor shape (from the reference video frames): small, slim,
-// solid pastel-coloured triangular pointers pointing up-left — NOT the
-// classic fat white arrow with a black outline. Each cursor is one
-// pastel colour, flat fill, no stroke, no shadow, no label.
-const CURSOR_COLORS = ['#7de8c3', '#7dd3fc', '#c4b5fd', '#f9a8d4', '#fde68a', '#86efac', '#fda4af', '#67e8f9', '#f0abfc', '#a3e635', '#fca5a5', '#93c5fd', '#5eead4', '#d8b4fe', '#fbbf24', '#6ee7b7', '#f9a8d4', '#a5b4fc'];
+/* Swarm preview — v9 build, restored (2026-11-06 revert).
+   The user rejected v10/v11 outright: back to the v9 build exactly
+   as it was — parallel 12 lanes, 18 cursors working together within
+   each section, ~55s, camera follows the section, drag-and-drop
+   frames, visible typing, grayscale-to-colour reveal, snap pop.
+   Restored from the actual v9 bundle (commit d51a76fc), not from
+   memory: timings, lane structure, cursor shape/colours and the
+   veil copy are v9's. ONLY TWO changes vs v9:
+   1. The name tags above the cursors are REMOVED — plain cursors
+      only, no names anywhere (the reference video has no names).
+      Cursor colours stay v9's, cursor shape stays v9's classic
+      white arrow with a black outline.
+   2. BLACK-SCREEN INTRO with a proper Framer Motion entrance: when
+      Play is pressed the screen goes black, "BUILDING." animates in
+      letter by letter (Renando's reveal — opacity 0, y 32, ease
+      [.25,.1,.35,1], staggered), then the veil fades out with
+      Framer Motion and the v9 build runs on the blank page.
+   Motion sources studied 2026-11-06 (study only, nothing copied):
+   - DhvanilPatel/swarm-cursors (tribute to Joel Califa's Swarm):
+     page fades out, cursors orbit then fan out; arc hops with a
+     bowed midpoint (80-120ms); easeOut cubic for drags, easeInOut
+     for short drags; rects crosshair-dragged with a placeholder,
+     fill fades in; text dragged into a box and typed with an
+     I-beam + blinking caret, big headings stepping up from small;
+     images sweep top to bottom. v9 already moves this way (arc
+     hops 80-120ms, ease-out drags, drag-in frames, grayscale-to-
+     colour reveal, blinking caret) — kept as-is.
+   - Renando's site (renando.duingzcreative.site, public bundle):
+     Framer Motion Reveal — initial {opacity:0, y:32},
+     whileInView {opacity:1, y:0}, viewport {once:false,
+     amount:.12}, duration .75, ease [.25,.1,.35,1]; cards
+     duration .6 with (index%3)*.06 stagger, exit {opacity:0,
+     scale:.96}. Our site's Reveal/Card already use this pattern;
+     the swarm veil entrance uses Renando's exact ease + y-32
+     reveal + stagger. No Renando assets, copy, photos, logos or
+     contact details are used, and no external script is loaded. */
+// v9 cursor colours, in v9 order — colours only, NO names anywhere
+// (the reference video has plain small cursors, nothing written
+// above them).
+const CURSOR_COLORS = ['#ff5d65', '#ffd166', '#7dd3fc', '#c4b5fd', '#86efac', '#fda4af', '#fbbf24', '#67e8f9', '#f0abfc', '#a3e635', '#fb923c', '#93c5fd', '#fca5a5', '#5eead4', '#d8b4fe', '#fde68a', '#6ee7b7', '#f9a8d4'];
 const FRAME_SEL = '.card-open, .panel, .step, .exp, .cert-row, .cert-card, .role-item, .skill-item, .hero-portrait, .reel-box';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const rnd = (a, b) => a + Math.random() * (b - a);
 const PHASE_ORDER = ['Header', 'Hero', 'Selected Work', 'Process', 'About', 'Skills', 'Recognition', 'Roles', 'Journey', 'Contact', 'Footer'];
-/* Swarm v10 — parallel multi-agent (Nov 2026): the v8 over-effects
-   stay removed (trails, sparkle bursts/stars, ripple rings, glow
-   pulse, per-section cursor colour rings, status-bar shimmer).
-   What remains, intensity up: dramatic drag-and-drop frames, visible
-   typing with bold caret, colour wash, grayscale-to-colour reveal,
-   plain pop settle, snap outline, rotate-in, stagger, arc travel,
-   18 plain unnamed cursors in 12 parallel lanes, all working
-   together within each section, camera following the section,
-   blank start, ends at top. Hero slightly slow, rest faster, no
-   dwell, continuous, parallel within a section. */
+// Renando's reveal ease, used for the black-screen intro.
+const VEIL_EASE = [0.25, 0.1, 0.35, 1];
 function phaseOf(el) {
   if (el.closest('.skills-full')) return 'Skills';
   if (el.closest('header')) return 'Header';
@@ -339,16 +338,6 @@ function Swarm({ onDone }) {
   const restoreRef = useRef(null);
   const doneCountRef = useRef(0);
   const totalRef = useRef(0);
-  // v10 IDLE-HIDE: a cursor is visible ONLY while it has work. busyRef
-  // counts how many jobs each cursor is on; a cursor that finishes its
-  // work drops to 0 and fades out (opacity 0), and fades back in when
-  // its next job starts. No cursor ever stands idle on screen.
-  const busyRef = useRef(CURSOR_COLORS.map(() => 0));
-  const setBusy = useCallback((team, delta) => {
-    team.forEach(i => { busyRef.current[i] = Math.max(0, busyRef.current[i] + delta); });
-    setActive(busyRef.current.map((c, i) => (c > 0 ? i : -1)).filter(i => i >= 0));
-  }, []);
-  const releaseTeam = useCallback((team) => setBusy(team, -1), [setBusy]);
   const setStatusCount = useCallback((phase) => {
     setStatus(`Building ${phase} — ${doneCountRef.current} of ${totalRef.current} items, all together, 12 lanes`);
   }, []);
@@ -358,7 +347,7 @@ function Swarm({ onDone }) {
     document.body.classList.remove('swarm-building', 'swarm-wireframe');
     setActive([]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    await sleep(500);
+    await sleep(700);
     onDone();
   }, [onDone]);
   useEffect(() => {
@@ -369,14 +358,15 @@ function Swarm({ onDone }) {
       lastPosRef.current[idx] = { x: clampX(x), y: clampY(y) };
       setPos(prev => prev.map((p, i) => i === idx ? { x: clampX(x), y: clampY(y) } : p));
     };
-    // v8 arc travel: bow upward through a midpoint between where the
-    // cursor actually is and its target — no straight-line jumps.
+    // Arc travel (swarm-cursors style): bow upward through a midpoint
+    // between where the cursor actually is and its target — 80-120ms
+    // hops, no straight-line jumps.
     const arcMove = async (idx, x, y) => {
       const cur = lastPosRef.current[idx] || { x, y };
       const midX = (cur.x + x) / 2 + rnd(-60, 60);
       const midY = Math.min(cur.y, y) - rnd(50, 110);
       moveCursor(idx, midX, midY);
-      await sleep(Math.round(rnd(50, 75)));
+      await sleep(Math.round(rnd(80, 120)));
       moveCursor(idx, x, y);
     };
     const run = async () => {
@@ -408,7 +398,7 @@ function Swarm({ onDone }) {
       frameEls.forEach(el => {
         el.setAttribute('data-swarm-hidden', '1');
         el.style.transition = 'transform 450ms cubic-bezier(.22,1,.36,1), opacity 450ms';
-        el.style.transform = `translate(${Math.round(rnd(-220, -120))}px, ${Math.round(rnd(80, 150))}px) scale(.9) rotate(-4deg)`;
+        el.style.transform = `translate(${Math.round(rnd(-220, -120))}px, ${Math.round(rnd(80, 150))}px) scale(.9)`;
         el.style.opacity = '0';
       });
       // Footer social links have no text: they are icon-only drag units.
@@ -421,7 +411,10 @@ function Swarm({ onDone }) {
       };
       document.body.classList.add('swarm-building');
       window.scrollTo(0, 0);
-      await sleep(500); if (cancelled || doneRef.current) return;
+      // Black screen holds long enough for the BUILDING entrance
+      // (letters stagger in over ~1.1s) to actually be seen, then the
+      // veil fades out with Framer Motion and the build runs.
+      await sleep(1100); if (cancelled || doneRef.current) return;
       setVeil(false);
       // Build groups: a frame + its inner text units = one group; a text unit
       // outside any frame = its own group. Groups are atomic for a lane.
@@ -434,15 +427,7 @@ function Swarm({ onDone }) {
           if (!groupByFrame.has(f)) groupByFrame.set(f, { frame: f, texts: [], phase: phaseOf(f), top: 0 });
           groupByFrame.get(f).texts.push(u);
         } else {
-          // Group by parent element, and by tight-row container for nav /
-          // filters / socials, so two cursors never land on the same
-          // element or on adjacent 44px buttons at once (cycle-1 failure).
           const container = u.parent.closest('.filters, .nav, .socials');
-          // Climb out of inline wrappers (span/b/small/strong) so all
-          // text inside one heading, link or stat is typed by ONE cursor
-          // in sequence (cycle-2 failure: a red '.' appeared on an empty
-          // second line while ABRAR was still typing, because '.' had
-          // its own lane).
           let keyEl = container;
           if (!keyEl) {
             keyEl = u.parent;
@@ -456,8 +441,7 @@ function Swarm({ onDone }) {
       });
       groupByFrame.forEach(g => groups.push(g));
       standaloneByKey.forEach(g => groups.push(g));
-      // Frames with no text at all (hero portrait) must still be built,
-      // otherwise they stay hidden until finish (cycle-1 failure).
+      // Frames with no text at all (hero portrait) must still be built.
       frameEls.forEach(el => { if (!groupByFrame.has(el)) groups.push({ frame: el, texts: [], phase: phaseOf(el), top: 0 }); });
       // Footer social icons: ONE group, one cursor revealing them in
       // sequence, not 5 parallel cursors clustered on 44px icons.
@@ -475,91 +459,9 @@ function Swarm({ onDone }) {
       groups.forEach(g => { if (!ordered.includes(g)) ordered.push(g); });
       totalRef.current = textUnits.length + frameEls.length + iconUnits.length;
       doneCountRef.current = 0;
-      // --- v10 opening: BLACK SCREEN + GATHER + PORTFOLIO showpiece. ---
-      // The veil (black screen) has just lifted; the page underneath is
-      // blank black. All 18 plain cursors first converge on one goal —
-      // the centre of the PORTFOLIO hero word — and circle it together
-      // (~2.7s, like the reference video opening), then disperse: only
-      // the cursors with work stay visible, the rest fade out (idle-hide).
-      // Then PORTFOLIO gets a 5-6s showpiece: stretch + drag-in, slow
-      // letter-by-letter typing, drop snap, then the portrait drags in.
-      const heroWordEl = document.querySelector('.hero-word');
-      const heroPortraitEl = document.querySelector('.hero-portrait');
-      const wordGroup = groups.find(g => g.texts.some(u => u.parent.closest('.hero-word')));
-      const portraitGroup = groups.find(g => g.frame === heroPortraitEl);
-      const openingGroups = new Set([wordGroup, portraitGroup].filter(Boolean));
-      if (heroWordEl) {
-        const wr = heroWordEl.getBoundingClientRect();
-        const gx = wr.left + wr.width / 2, gy = wr.top + wr.height / 2;
-        setStatus('All cursors gathering…');
-        setActive(CURSOR_COLORS.map((_, i) => i));
-        CURSOR_COLORS.forEach((_, i) => moveCursor(i, gx + rnd(-280, 280), gy + rnd(-170, 170)));
-        await sleep(500); if (cancelled || doneRef.current) return;
-        for (let step = 0; step < 8; step++) {
-          if (cancelled || doneRef.current) return;
-          CURSOR_COLORS.forEach((_, i) => {
-            const a = (i / CURSOR_COLORS.length) * Math.PI * 2 + step * 0.45;
-            moveCursor(i, gx + Math.cos(a) * 115, gy + Math.sin(a) * 72);
-          });
-          await sleep(280);
-        }
-        // PORTFOLIO showpiece (~5.5s): only cursors 0-2 work the word.
-        setStatus('Building PORTFOLIO — the opening…');
-        setActive([0, 1, 2]);
-        if (wordGroup) {
-          const u = wordGroup.texts[0];
-          const par = u.parent;
-          const word = (u.text || '').trim();
-          moveCursor(0, gx - 130, gy); moveCursor(1, gx, gy - 46); moveCursor(2, gx + 130, gy);
-          par.classList.add('swarm-typing');
-          try { par.animate([{ transform: 'scaleX(0.55) translateX(-140px)', opacity: 0.4 }, { transform: 'scaleX(1.18) translateX(20px)', opacity: 1, offset: 0.7 }, { transform: 'scaleX(1) translateX(0)' }], { duration: 1400, easing: 'cubic-bezier(.22,1,.36,1)' }); } catch {}
-          await sleep(1400); if (cancelled || doneRef.current) return;
-          for (let k = 1; k <= word.length; k++) {
-            if (cancelled || doneRef.current) return;
-            u.node.nodeValue = word.slice(0, k);
-            await sleep(240);
-          }
-          u.node.nodeValue = u.text;
-          par.classList.remove('swarm-typing');
-          try { par.animate([{ transform: 'scale(1.07)' }, { transform: 'scale(1)' }], { duration: 350, easing: 'ease-out' }); } catch {}
-          doneCountRef.current += 1; setStatusCount('Hero');
-          await sleep(300); if (cancelled || doneRef.current) return;
-        }
-        // Portrait drags in right after (~1.9s): only cursors 3-4.
-        setActive([3, 4]);
-        if (portraitGroup && heroPortraitEl) {
-          const f = heroPortraitEl;
-          f.dataset.swarmDone = '1';
-          const r = f.getBoundingClientRect();
-          moveCursor(3, r.left + r.width / 2, r.top + 40); moveCursor(4, r.left + 30, r.top + r.height - 30);
-          f.classList.add('swarm-drawing', 'swarm-lift');
-          f.removeAttribute('data-swarm-hidden');
-          f.style.opacity = '1';
-          f.style.transform = 'translate(-120px, 60px) scale(.94) rotate(-3deg)';
-          await sleep(500); if (cancelled || doneRef.current) return;
-          moveCursor(3, r.left + r.width / 2 - 40, r.top + 20);
-          f.style.transform = 'translate(-50px, 20px) scale(.98) rotate(-1deg)';
-          await sleep(500); if (cancelled || doneRef.current) return;
-          f.style.transform = '';
-          f.querySelectorAll('img, svg').forEach(x => { x.style.opacity = ''; x.style.filter = 'grayscale(1) brightness(.6)'; try { x.animate([{ filter: 'grayscale(1) brightness(.6)' }, { filter: 'grayscale(0) brightness(1)' }], { duration: 650, easing: 'ease-out' }); } catch {} setTimeout(() => { x.style.filter = ''; }, 670); });
-          await sleep(650); if (cancelled || doneRef.current) return;
-          f.classList.remove('swarm-drawing');
-          f.classList.add('swarm-snap');
-          try { f.animate([{ transform: 'scale(1.08)' }, { transform: 'scale(0.98)', offset: 0.6 }, { transform: 'scale(1)' }], { duration: 380, easing: 'ease-out' }); } catch {}
-          await sleep(200);
-          f.classList.remove('swarm-snap', 'swarm-lift');
-          f.style.transition = '';
-          doneCountRef.current += 1; setStatusCount('Hero');
-        }
-        busyRef.current = CURSOR_COLORS.map(() => 0);
-        setActive([]);
-      }
-      // --- v10 engine: 12 PARALLEL LANES within each section. ---
       // ensureVisible: scroll smoothly so the element sits CENTRED in
-      // the viewport before anyone works on it. Only scrolls when the
-      // element is outside the central band, so the camera glides down
-      // with the work instead of jumping on every item. A scroll guard
-      // (one scroll per 500ms) stops parallel lanes fighting the camera.
+      // the viewport before anyone works on it. A scroll guard (one
+      // scroll per 500ms) stops parallel lanes fighting the camera.
       let lastScrollAt = 0;
       const ensureVisible = async (el) => {
         if (!el || cancelled || doneRef.current) return;
@@ -571,20 +473,20 @@ function Swarm({ onDone }) {
           lastScrollAt = now;
           const targetTop = Math.max(0, r.top + window.scrollY - vh / 2 + r.height / 2);
           window.scrollTo({ top: targetTop, behavior: 'smooth' });
-          await sleep(130);
+          await sleep(220);
         }
       };
-      // focusTeam (v9 parallel): each group gets a lead + 2 helpers
-      // working on the SAME current item, rotating through all 18
-      // cursors — but the team is ADDED to the active set, never
-      // parked: all 12 lanes work at once, so up to 18 cursors are
-      // visible together, each doing its own job in this section.
+      // focusTeam (v9): each group gets a lead + 2 helpers working on
+      // the SAME current item, rotating through all 18 cursors — and
+      // the team is ADDED to the visible set and stays visible: all
+      // 12 lanes work at once, so up to 18 cursors are visible
+      // together, each doing its own job in this section.
       let teamSeq = 0;
       const focusTeam = (el) => {
         const lead = teamSeq % CURSOR_COLORS.length; teamSeq += 1;
         const helpers = [(lead + 1) % CURSOR_COLORS.length, (lead + 2) % CURSOR_COLORS.length];
         const team = [lead, ...helpers];
-        setBusy(team, +1);
+        setActive(prev => Array.from(new Set([...prev, ...team])));
         return { lead, helpers };
       };
       const parkHelpers = (helpers, el) => {
@@ -613,15 +515,13 @@ function Swarm({ onDone }) {
             const rotI = focusTeam(iconEl);
             const r = iconEl.getBoundingClientRect();
             moveCursor(rotI.lead, r.left + rnd(-40, 40), r.top + rnd(-30, 30));
-            await sleep(Math.round(hero ? rnd(70, 110) : rnd(90, 130))); if (cancelled || doneRef.current) return;
+            await sleep(Math.round(hero ? rnd(120, 180) : rnd(150, 220))); if (cancelled || doneRef.current) return;
             moveCursor(rotI.lead, r.left + 6, r.top + 6);
             iconEl.querySelectorAll('svg').forEach(x => { x.style.opacity = ''; });
             try { iconEl.animate([{ transform: 'scale(.4) rotate(-12deg)', opacity: 0 }, { transform: 'scale(1) rotate(0deg)', opacity: 1 }], { duration: 380, easing: 'cubic-bezier(.22,1,.36,1)' }); } catch {}
             doneCountRef.current += 1; setStatusCount(g.phase);
-            releaseTeam([rotI.lead, ...rotI.helpers]);
-            await sleep(Math.round(hero ? rnd(50, 75) : rnd(36, 54)));
+            await sleep(Math.round(hero ? rnd(80, 120) : rnd(100, 150)));
           }
-          releaseTeam([lead, ...helpers]);
           return;
         }
         if (g.frame && !g.frame.dataset.swarmDone) {
@@ -630,7 +530,7 @@ function Swarm({ onDone }) {
           // Helpers take the other corners of THIS same frame.
           parkHelpers(helpers, g.frame);
           moveCursor(cIdx, r.left + rnd(-160, 160), r.top + rnd(-90, 90));
-          await sleep(Math.round(hero ? rnd(70, 110) : rnd(120, 180))); if (cancelled || doneRef.current) return;
+          await sleep(Math.round(hero ? rnd(120, 180) : rnd(200, 300))); if (cancelled || doneRef.current) return;
           // DRAG CARRY: grab the frame at its offset spot, LIFT it
           // (shadow + outline), reveal it there, then carry it visibly
           // into place in two steps with the cursor — the frame travels
@@ -639,27 +539,24 @@ function Swarm({ onDone }) {
           g.frame.removeAttribute('data-swarm-hidden');
           g.frame.style.opacity = '1';
           try { g.frame.animate([{ backgroundColor: CURSOR_COLORS[cIdx] + '55' }, { backgroundColor: 'transparent' }], { duration: 500, easing: 'ease-out' }); } catch {}
-          try { g.frame.animate([{ transform: 'translate(-70px, 35px) scale(.9) rotate(-3deg)' }, { transform: 'translate(0, 0) scale(1) rotate(0deg)' }], { duration: 600, easing: 'cubic-bezier(.22,1,.36,1)' }); } catch {}
-          await sleep(120); if (cancelled || doneRef.current) return;
+          await sleep(200); if (cancelled || doneRef.current) return;
           moveCursor(cIdx, (r.left + r.left + 10) / 2 + rnd(-40, 40), Math.min(r.top, r.top + 10) - rnd(40, 80));
-          g.frame.style.transform = 'translate(-70px, 35px) scale(.96) rotate(-2deg)';
-          await sleep(180); if (cancelled || doneRef.current) return;
+          g.frame.style.transform = 'translate(-70px, 35px) scale(.96)';
+          await sleep(300); if (cancelled || doneRef.current) return;
           moveCursor(cIdx, r.left + 10, r.top + 10);
           g.frame.style.transform = '';
-          await sleep(180); if (cancelled || doneRef.current) return;
+          await sleep(300); if (cancelled || doneRef.current) return;
           g.frame.querySelectorAll('img, svg').forEach(x => { x.style.opacity = ''; x.style.filter = 'grayscale(1) brightness(.6)'; try { x.animate([{ filter: 'grayscale(1) brightness(.6)' }, { filter: 'grayscale(0) brightness(1)' }], { duration: 650, easing: 'ease-out' }); } catch {} setTimeout(() => { x.style.filter = ''; }, 670); });
-          await sleep(Math.round(hero ? rnd(95, 145) : rnd(180, 270))); if (cancelled || doneRef.current) return;
+          await sleep(Math.round(hero ? rnd(160, 240) : rnd(300, 450))); if (cancelled || doneRef.current) return;
           g.frame.classList.remove('swarm-drawing');
           g.frame.classList.add('swarm-snap');
           // Clear DROP SNAP: 1.08 -> 0.98 -> 1 over 380ms.
           try { g.frame.animate([{ transform: 'scale(1.08)' }, { transform: 'scale(0.98)', offset: 0.6 }, { transform: 'scale(1)' }], { duration: 380, easing: 'ease-out' }); } catch {}
-          await sleep(90);
+          await sleep(150);
           g.frame.classList.remove('swarm-snap', 'swarm-lift');
           g.frame.style.transition = '';
           doneCountRef.current += 1; setStatusCount(g.phase);
-          releaseTeam([lead, ...helpers]);
         }
-        else { releaseTeam([lead, ...helpers]); }
         for (const u of g.texts) {
           if (cancelled || doneRef.current) return;
           const par = u.parent;
@@ -670,21 +567,16 @@ function Swarm({ onDone }) {
           if (cancelled || doneRef.current) return;
           const holder = par.closest('a, button') || par;
           holder.querySelectorAll('svg, img').forEach(x => { x.style.opacity = ''; });
-          // ROTATION (user clarification): every text unit is typed
-          // by the NEXT cursor in turn — no single cursor does all the
-          // typing, and every cursor gets its turn across the build.
+          // ROTATION: every text unit is typed by the NEXT cursor in
+          // turn — no single cursor does all the typing, and every
+          // cursor gets its turn across the build.
           const rot = focusTeam(par);
           const tIdx = rot.lead;
           parkHelpers(rot.helpers, par);
           moveCursor(tIdx, r.left + rnd(-120, 120), r.top + rnd(-60, 60));
-          await sleep(Math.round(hero ? rnd(70, 110) : rnd(90, 130))); if (cancelled || doneRef.current) return;
+          await sleep(Math.round(hero ? rnd(120, 180) : rnd(150, 220))); if (cancelled || doneRef.current) return;
           await arcMove(tIdx, r.left + 6, r.top + 6); if (cancelled || doneRef.current) return;
           par.classList.add('swarm-typing');
-          // DRAG-DROP + SCALE-IN for text: carried into place (slide
-          // from an offset, scaling up) as it is written; headings
-          // stretch/scale into place instead.
-          if (/^H[123]$/.test(par.tagName)) { try { par.animate([{ transform: 'scaleX(1.14) scaleY(.94)' }, { transform: 'scaleX(1) scaleY(1)' }], { duration: 450, easing: 'cubic-bezier(.22,1,.36,1)' }); } catch {} }
-          else { try { par.animate([{ transform: 'translate(-46px, 16px) scale(.88)', opacity: 0.55 }, { transform: 'translate(0, 0) scale(1)', opacity: 1 }], { duration: 420, easing: 'cubic-bezier(.22,1,.36,1)' }); } catch {} }
           const words = u.text.trim().split(/\s+/);
           const letterMode = words.length === 1 && words[0].length >= 5;
           if (letterMode) {
@@ -692,10 +584,10 @@ function Swarm({ onDone }) {
             for (let k = 1; k <= w.length; k++) {
               if (cancelled || doneRef.current) return;
               u.node.nodeValue = w.slice(0, k);
-              await sleep(Math.round(hero ? rnd(30, 50) : rnd(27, 42)));
+              await sleep(Math.round(hero ? rnd(50, 80) : rnd(45, 70)));
             }
           } else {
-            const wordMs = hero ? [40, 60] : (words.length > 10 ? [55, 80] : [48, 72]);
+            const wordMs = hero ? [60, 90] : (words.length > 10 ? [80, 120] : [70, 110]);
             const chunk = words.length > 10 ? 3 : 1;
             for (let k = chunk; k <= words.length; k += chunk) {
               if (cancelled || doneRef.current) return;
@@ -707,20 +599,19 @@ function Swarm({ onDone }) {
           par.classList.remove('swarm-typing');
           try { par.animate([{ transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'ease-out' }); } catch {}
           doneCountRef.current += 1; setStatusCount(g.phase);
-          releaseTeam([rot.lead, ...rot.helpers]);
-          await sleep(Math.round(hero ? rnd(36, 54) : rnd(48, 78)));
+          await sleep(Math.round(hero ? rnd(60, 90) : rnd(80, 130)));
         }
       };
-      // PARALLEL run (v10): sections in order, but WITHIN each section
+      // PARALLEL run (v9): sections in order, but WITHIN each section
       // all groups build at once in 12 lanes — every cursor doing its
       // own work, all together, in the same section. The camera scrolls
       // to the section first, then follows the team inside it.
       window.scrollTo(0, 0);
-      await sleep(120); if (cancelled || doneRef.current) return;
+      await sleep(200); if (cancelled || doneRef.current) return;
       const LANE_COUNT = 12;
       for (const ph of PHASE_ORDER) {
         if (cancelled || doneRef.current) return;
-        const phaseGroups = ordered.filter(g => g.phase === ph && !openingGroups.has(g));
+        const phaseGroups = ordered.filter(g => g.phase === ph);
         if (!phaseGroups.length) continue;
         const firstEl = phaseGroups[0].frame || (phaseGroups[0].texts[0] && phaseGroups[0].texts[0].parent) || (phaseGroups[0].iconEls && phaseGroups[0].iconEls[0]);
         await ensureVisible(firstEl);
@@ -736,17 +627,29 @@ function Swarm({ onDone }) {
         })()));
       }
       setStatus('Done — back to the real page…');
-      await sleep(500);
+      await sleep(700);
       if (!cancelled) finish();
     };
     const p = run();
     return () => { cancelled = true; document.body.classList.remove('swarm-building', 'swarm-wireframe'); };
   }, [finish]);
   return <>
-    {veil && <div className="swarm-veil"><span className="eyebrow muted">SWARM BUILD · PREVIEW ONLY</span><span className="big display">BUILDING<span className="accent">.</span></span><p className="muted">Starting from a blank page. All the cursors build together, at once — and the camera follows the section.</p></div>}
-    {CURSOR_COLORS.map((color, i) => <div key={i} className="swarm-cursor" style={{ left: pos[i]?.x ?? -100, top: pos[i]?.y ?? -100, '--red': color, opacity: active.includes(i) ? 1 : 0 }}>
-      <svg width="17" height="19" viewBox="0 0 18 20" aria-hidden="true"><path d="M1 1 L16.5 9.5 L10.5 10.7 L13 17.5 L10.4 18.4 L7.9 11.6 L3 16.5 Z" fill={color} /></svg>
-    </div>)}
+    <AnimatePresence>
+      {veil && (
+        <motion.div className="swarm-veil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.6, ease: VEIL_EASE } }} transition={{ duration: 0.45, ease: VEIL_EASE }}>
+          <motion.span className="eyebrow muted" initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0, ease: VEIL_EASE }}>SWARM BUILD · PREVIEW ONLY</motion.span>
+          <span className="big display" aria-hidden="true">{'BUILDING'.split('').map((ch, i) => (
+            <motion.span key={i} style={{ display: 'inline-block' }} initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12 + i * 0.05, ease: VEIL_EASE }}>{ch}</motion.span>
+          ))}<motion.span className="accent" style={{ display: 'inline-block' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.55 }}>.</motion.span></span>
+          <motion.p className="muted" initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0.3, ease: VEIL_EASE }}>Starting from a blank page. All the cursors build together, at once — and the camera follows the section.</motion.p>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    {CURSOR_COLORS.map((color, i) => active.includes(i) && (
+      <div key={i} className="swarm-cursor" style={{ left: pos[i]?.x ?? -100, top: pos[i]?.y ?? -100, '--red': color }}>
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2 L20 11.5 L13.5 12.8 L17.5 20.5 L13.8 22 L9.8 14.3 L5 17.5 Z" fill="#ffffff" stroke="#000000" strokeWidth="1.4" strokeLinejoin="round" /></svg>
+      </div>
+    ))}
     <div className="swarm-bar"><span>SWARM BUILD · PREVIEW</span><span className="status">{status}</span><button className="outline-btn" onClick={finish}>Skip</button></div>
   </>;
 }
