@@ -310,7 +310,16 @@ function Dialog({ project, onClose }) {
      scale:.96}. Our site's Reveal/Card already use this pattern;
      the swarm veil entrance uses Renando's exact ease + y-32
      reveal + stagger. No Renando assets, copy, photos, logos or
-     contact details are used, and no external script is loaded. */
+     contact details are used, and no external script is loaded.
+   HERO FOCUS (2026-11-06, user's order — home page is the hook):
+   - After the BUILDING veil, the build opens on PORTFOLIO: the
+     word is dragged + stretched in letter by letter (~3.5s),
+     with ALL 18 cursors starting together around it.
+   - Then the whole Hero phase runs slow (HERO_PACE) with all
+     cursors already visible — portrait drag-in, intro typing,
+     tagline, stats, nav, all together at once — so the home
+     page takes ~10s in total before the team moves on.
+   - Everything after Hero is unchanged v9 pacing/timing. */
 // v9 cursor colours, in v9 order — colours only, NO names anywhere
 // (the reference video has plain small cursors, nothing written
 // above them).
@@ -318,6 +327,11 @@ const CURSOR_COLORS = ['#ff5d65', '#ffd166', '#7dd3fc', '#c4b5fd', '#86efac', '#
 const FRAME_SEL = '.card-open, .panel, .step, .exp, .cert-row, .cert-card, .role-item, .skill-item, .hero-portrait, .reel-box';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const rnd = (a, b) => a + Math.random() * (b - a);
+// HERO FOCUS: hero sleeps run HERO_PACE times slower than the
+// rest of the build, so the home page (the hook) takes ~10s in
+// total — PORTFOLIO opening (~3.5s) + slow hero phase (~6s).
+// Every other phase keeps v9 pacing exactly.
+const HERO_PACE = 2.3;
 const PHASE_ORDER = ['Header', 'Hero', 'Selected Work', 'Process', 'About', 'Skills', 'Recognition', 'Roles', 'Journey', 'Contact', 'Footer'];
 // Renando's reveal ease, used for the black-screen intro.
 const VEIL_EASE = [0.25, 0.1, 0.35, 1];
@@ -427,7 +441,12 @@ function Swarm({ onDone }) {
           if (!groupByFrame.has(f)) groupByFrame.set(f, { frame: f, texts: [], phase: phaseOf(f), top: 0 });
           groupByFrame.get(f).texts.push(u);
         } else {
-          const container = u.parent.closest('.filters, .nav, .socials');
+          // HERO FOCUS: the header nav links are NOT lumped into one
+          // group — each link is its own group, so all 6 build in
+          // parallel lanes at once (the old '.nav' grouping made one
+          // lane type all 6 links one-by-one, ~6s for the header
+          // alone). Filters and footer socials stay grouped.
+          const container = u.parent.closest('.filters, .socials');
           let keyEl = container;
           if (!keyEl) {
             keyEl = u.parent;
@@ -498,6 +517,10 @@ function Swarm({ onDone }) {
           moveCursor(h, x, y);
         });
       };
+      // Hero pacing: hero sleeps run HERO_PACE times longer, so the
+      // home page (the hook) takes ~10s in total. Other phases use
+      // v9 sleeps exactly.
+      const paceSleep = (isHero, a, b, c, d) => sleep(Math.round(isHero ? rnd(a, b) * HERO_PACE : rnd(c, d)));
       // buildGroup: one group, start to finish, by the focus team.
       const buildGroup = async (g) => {
         if (cancelled || doneRef.current) return;
@@ -530,7 +553,7 @@ function Swarm({ onDone }) {
           // Helpers take the other corners of THIS same frame.
           parkHelpers(helpers, g.frame);
           moveCursor(cIdx, r.left + rnd(-160, 160), r.top + rnd(-90, 90));
-          await sleep(Math.round(hero ? rnd(120, 180) : rnd(200, 300))); if (cancelled || doneRef.current) return;
+          await paceSleep(hero, 120, 180, 200, 300); if (cancelled || doneRef.current) return;
           // DRAG CARRY: grab the frame at its offset spot, LIFT it
           // (shadow + outline), reveal it there, then carry it visibly
           // into place in two steps with the cursor — the frame travels
@@ -539,15 +562,15 @@ function Swarm({ onDone }) {
           g.frame.removeAttribute('data-swarm-hidden');
           g.frame.style.opacity = '1';
           try { g.frame.animate([{ backgroundColor: CURSOR_COLORS[cIdx] + '55' }, { backgroundColor: 'transparent' }], { duration: 500, easing: 'ease-out' }); } catch {}
-          await sleep(200); if (cancelled || doneRef.current) return;
+          await sleep(hero ? Math.round(200 * HERO_PACE) : 200); if (cancelled || doneRef.current) return;
           moveCursor(cIdx, (r.left + r.left + 10) / 2 + rnd(-40, 40), Math.min(r.top, r.top + 10) - rnd(40, 80));
           g.frame.style.transform = 'translate(-70px, 35px) scale(.96)';
-          await sleep(300); if (cancelled || doneRef.current) return;
+          await sleep(hero ? Math.round(300 * HERO_PACE) : 300); if (cancelled || doneRef.current) return;
           moveCursor(cIdx, r.left + 10, r.top + 10);
           g.frame.style.transform = '';
-          await sleep(300); if (cancelled || doneRef.current) return;
+          await sleep(hero ? Math.round(300 * HERO_PACE) : 300); if (cancelled || doneRef.current) return;
           g.frame.querySelectorAll('img, svg').forEach(x => { x.style.opacity = ''; x.style.filter = 'grayscale(1) brightness(.6)'; try { x.animate([{ filter: 'grayscale(1) brightness(.6)' }, { filter: 'grayscale(0) brightness(1)' }], { duration: 650, easing: 'ease-out' }); } catch {} setTimeout(() => { x.style.filter = ''; }, 670); });
-          await sleep(Math.round(hero ? rnd(160, 240) : rnd(300, 450))); if (cancelled || doneRef.current) return;
+          await paceSleep(hero, 160, 240, 300, 450); if (cancelled || doneRef.current) return;
           g.frame.classList.remove('swarm-drawing');
           g.frame.classList.add('swarm-snap');
           // Clear DROP SNAP: 1.08 -> 0.98 -> 1 over 380ms.
@@ -574,7 +597,7 @@ function Swarm({ onDone }) {
           const tIdx = rot.lead;
           parkHelpers(rot.helpers, par);
           moveCursor(tIdx, r.left + rnd(-120, 120), r.top + rnd(-60, 60));
-          await sleep(Math.round(hero ? rnd(120, 180) : rnd(150, 220))); if (cancelled || doneRef.current) return;
+          await paceSleep(hero, 120, 180, 150, 220); if (cancelled || doneRef.current) return;
           await arcMove(tIdx, r.left + 6, r.top + 6); if (cancelled || doneRef.current) return;
           par.classList.add('swarm-typing');
           const words = u.text.trim().split(/\s+/);
@@ -584,10 +607,10 @@ function Swarm({ onDone }) {
             for (let k = 1; k <= w.length; k++) {
               if (cancelled || doneRef.current) return;
               u.node.nodeValue = w.slice(0, k);
-              await sleep(Math.round(hero ? rnd(50, 80) : rnd(45, 70)));
+              await paceSleep(hero, 50, 80, 45, 70);
             }
           } else {
-            const wordMs = hero ? [60, 90] : (words.length > 10 ? [80, 120] : [70, 110]);
+            const wordMs = hero ? [60 * HERO_PACE, 90 * HERO_PACE] : (words.length > 10 ? [80, 120] : [70, 110]);
             const chunk = words.length > 10 ? 3 : 1;
             for (let k = chunk; k <= words.length; k += chunk) {
               if (cancelled || doneRef.current) return;
@@ -599,9 +622,51 @@ function Swarm({ onDone }) {
           par.classList.remove('swarm-typing');
           try { par.animate([{ transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'ease-out' }); } catch {}
           doneCountRef.current += 1; setStatusCount(g.phase);
-          await sleep(Math.round(hero ? rnd(60, 90) : rnd(80, 130)));
+          await paceSleep(hero, 60, 90, 80, 130);
         }
       };
+      // HERO OPENING (the hook): PORTFOLIO is dragged + stretched
+      // in first, letter by letter, with ALL 18 cursors starting
+      // together around the word — then the slow hero phase builds
+      // the rest of the home page with all cursors already visible.
+      const portfolioUnit = textUnits.find(u => u.text.trim() === 'PORTFOLIO');
+      const portfolioGroup = portfolioUnit ? ordered.find(g => g.texts.includes(portfolioUnit)) : null;
+      if (portfolioUnit && portfolioGroup) {
+        const wordEl = portfolioUnit.parent;
+        setStatus('Building PORTFOLIO — the opening…');
+        await ensureVisible(wordEl);
+        if (cancelled || doneRef.current) return;
+        const wr = wordEl.getBoundingClientRect();
+        // All 18 cursors start together, ringed around the word.
+        setActive(CURSOR_COLORS.map((_, i) => i));
+        CURSOR_COLORS.forEach((_, idx) => {
+          const t = CURSOR_COLORS.length > 1 ? idx / (CURSOR_COLORS.length - 1) : 0;
+          moveCursor(idx, wr.left + t * wr.width + rnd(-16, 16), (idx % 2 === 0 ? wr.top - 34 : wr.bottom + 34) + rnd(-8, 8));
+        });
+        await sleep(650); if (cancelled || doneRef.current) return;
+        // DRAG + STRETCH: the word slides in from an offset, stretched
+        // wide, and settles — while the lead cursor drags along it.
+        try { wordEl.animate([
+          { transform: 'translate(-140px, 70px) scaleX(0.55)', opacity: 0.4 },
+          { transform: 'translate(0px, 0px) scaleX(1.18)', opacity: 1, offset: 0.65 },
+          { transform: 'translate(0px, 0px) scaleX(1)', opacity: 1 }
+        ], { duration: 1600, easing: 'cubic-bezier(.22,1,.36,1)' }); } catch {}
+        wordEl.classList.add('swarm-typing');
+        const word = 'PORTFOLIO';
+        for (let k = 1; k <= word.length; k++) {
+          if (cancelled || doneRef.current) return;
+          portfolioUnit.node.nodeValue = word.slice(0, k);
+          moveCursor(0, wr.left + (k / word.length) * wr.width, wr.top + wr.height / 2);
+          await sleep(150);
+        }
+        portfolioUnit.node.nodeValue = portfolioUnit.text;
+        wordEl.classList.remove('swarm-typing');
+        try { wordEl.animate([{ transform: 'scaleX(1.12)' }, { transform: 'scaleX(1)' }], { duration: 350, easing: 'ease-out' }); } catch {}
+        await sleep(450); if (cancelled || doneRef.current) return;
+        doneCountRef.current += 1; setStatusCount('Hero');
+        // Mark done so the phase loop does not retype the word.
+        portfolioGroup.done = true;
+      }
       // PARALLEL run (v9): sections in order, but WITHIN each section
       // all groups build at once in 12 lanes — every cursor doing its
       // own work, all together, in the same section. The camera scrolls
@@ -611,7 +676,7 @@ function Swarm({ onDone }) {
       const LANE_COUNT = 12;
       for (const ph of PHASE_ORDER) {
         if (cancelled || doneRef.current) return;
-        const phaseGroups = ordered.filter(g => g.phase === ph);
+        const phaseGroups = ordered.filter(g => g.phase === ph && !g.done);
         if (!phaseGroups.length) continue;
         const firstEl = phaseGroups[0].frame || (phaseGroups[0].texts[0] && phaseGroups[0].texts[0].parent) || (phaseGroups[0].iconEls && phaseGroups[0].iconEls[0]);
         await ensureVisible(firstEl);
